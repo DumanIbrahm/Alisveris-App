@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 
 class DetailsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    @IBOutlet weak var saveBtn: UIButton!
     @IBOutlet weak var sizeText: UITextField!
     @IBOutlet weak var priceText: UITextField!
     @IBOutlet weak var nameText: UITextField!
@@ -22,7 +22,7 @@ class DetailsViewController: UIViewController, UIImagePickerControllerDelegate, 
         super.viewDidLoad()
         
         if secilenUrunIsmi != ""{
-            //Core Data seçilen ürün bilgileini göster
+            saveBtn.isHidden = true
             if let uuidString = secilenUrunUUID?.uuidString{
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 let context = appDelegate.persistentContainer.viewContext
@@ -55,6 +55,8 @@ class DetailsViewController: UIViewController, UIImagePickerControllerDelegate, 
                 }
             }
         }else{
+            saveBtn.isHidden = false
+            saveBtn.isEnabled = false 
             nameText.text = ""
             priceText.text = ""
             sizeText.text = ""
@@ -108,6 +110,7 @@ class DetailsViewController: UIViewController, UIImagePickerControllerDelegate, 
         present(picker, animated: true, completion: nil)
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        saveBtn.isEnabled = true
         imageView.image = info[.originalImage] as? UIImage
         self.dismiss(animated: true)
     }
